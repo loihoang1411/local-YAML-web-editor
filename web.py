@@ -176,7 +176,8 @@ def start():
         stream = open("basket/" + md5hash, "r")
 
         session['yml'] = convert_keys_to_string(yaml.load(stream))
-
+        
+        session['md5hash'] = str(md5hash)
     else:
         raise Exception("hey dude, do you really know what you are doing here? :-)")
 
@@ -356,13 +357,13 @@ def update():
         value=999999
         setInDict(g.dictionary, key.split(","), value)
 
-    md5string =  hashlib.md5(yml.encode('utf-8')).hexdigest()
-
+#    md5string =  hashlib.request.args.get('md5hash').encode('utf-8').hexdigest()
+#    md5hash = request.args.get('md5hash')
     # :-)
-    with open("basket/" + md5string ,"wb") as save:
+    with open("basket/" + session['md5hash'] ,"wb") as save:
         save.write(yml.encode())
 
-    return render_template('update.html', YML=yml, MD5=md5string)
+    return render_template('update.html', YML=yml, MD5=session['md5hash'])
 
 
 if __name__ == '__main__':
