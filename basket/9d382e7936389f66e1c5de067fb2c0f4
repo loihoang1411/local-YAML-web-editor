@@ -1,0 +1,12 @@
+databases:
+  AIA132:
+    dsn: abc
+    labels:
+      host: 10.0.0.10
+      services_code: VAScode
+  BIB132:
+    dsn: cba
+    labels:
+      host: 10.0.0.11
+      services_code: VSAcode
+
