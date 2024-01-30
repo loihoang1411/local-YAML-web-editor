@@ -1,0 +1,27 @@
+metrics:
+  queue_table:
+    type: gauge
+    description: Queue table query
+    labels: [table_name, process_name, description, query]
+  queue_table_his_not_update:
+    type: gauge
+    description: TABLE NOT UPDATE OVERTIME
+    labels: [table_name, process_name, description, query]
+  queue_table_duplicate_row:
+    type: gauge
+    description: TABLE HAS DUPLICATE DATA
+    labels: [table_name, process_name]
+  queue_table_per_fail:
+    type: gauge
+    description: TABLE HAS PERCENT FAIL
+    labels: [table_name, process_name, description,query]
+  queue_kpi:
+    type: gauge
+    description: FAIL KPI
+    labels: [table_name, process_name, description, query]
+  nocpro_queue_monitor:
+    type: gauge
+    description: monitor nocpro
+    labels: [table_name, monitor_type, alertname, severity, ip_server_app, application, module_code]
+    expiration: 120
+

@@ -1,0 +1,20 @@
+# Define queries    
+queries:
+  TC1228_TRANSACTION_FAIL:
+#    #schedule: "*/1 * * * *"  
+    interval: 70
+    timeout: 60
+    databases: [TC1228]
+    metrics: [queue_table]
+    sql: |
+        select 'TRANSACTIONS' AS table_name,count(*) AS queue_table, 'TRANSACTIONS' AS process_name, 'Queue table TRANSACTIONS fail' AS description, 'SELECT COUNT(*) FROM transactions  where status <> 1' AS query   FROM transactions  where status <> 1
+  TC1228_KO_CAPNHAT_TRANSACTION:
+    interval: 60
+    timeout: 10
+    databases: [TC1228]
+    metrics: [queue_table_his_not_update]
+    sql: |
+        select 'TRANSACTIONS' AS table_name,'TRANSACTIONS' AS process_name, IFNULL(TIMESTAMPDIFF(MINUTE, MAX(REQUEST_TIME), NOW()),120)  AS queue_table_his_not_update,
+        'Bang TRANSACTIONS lau khong co du lieu moi' AS description,
+        "SELECT IFNULL(TIMESTAMPDIFF(MINUTE, MAX(REQUEST_TIME), NOW()),120) from TC1228.transactions where REQUEST_TIME > DATE_SUB(now(), INTERVAL 2 HOUR) " AS query 
+        from TC1228.transactions where REQUEST_TIME > DATE_SUB(now(), INTERVAL 2 HOUR)

@@ -1,0 +1,33 @@
+FROM alpine:3.3
+
+# Install wget and Python
+RUN apk --update add wget python
+
+# Download and install pip for Python 2.7
+RUN wget https://bootstrap.pypa.io/pip/2.7/get-pip.py --no-check-certificate
+RUN python get-pip.py
+
+# Install additional dependencies and clean up
+RUN apk add --no-cache gcc python-dev libffi-dev openssl-dev musl-dev && \
+    python -m ensurepip && \
+    rm -r /usr/lib/python*/ensurepip && \
+    pip install setuptools && \
+    rm -r /root/.cache
+
+# Set the working directory
+WORKDIR /app
+
+# Copy your application code
+COPY . /app
+
+# Install Python dependencies from requirements.txt
+RUN pip install -r requirements.txt
+
+# Remove unnecessary development packages
+RUN apk del gcc python-dev libffi-dev openssl-dev musl-dev
+
+# Expose a port if your application listens on a specific port
+EXPOSE 8421
+
+# Define the command to run your application
+CMD ["/usr/bin/python", "web.py"]

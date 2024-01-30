@@ -1,0 +1,25 @@
+endpoints:
+  health:
+    sensitive: true
+ff4j:
+  webapi:
+    authentication: true
+    authorization: true
+logging:
+  level:
+    br:
+      com: null
+      mytest: INFO1
+    org:
+      springframework:
+        web: INFO
+my:
+  password: now you can see this :-)
+  password2: passwords are not supposed to be on github.
+number: 1.69
+server:
+  port: 1000
+this:
+  key:
+    does:
+      nothing: null

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>YML Editor</title>
+</head>
+<body>
+    <h1>Welcome to the YML Editor</h1>
+
+    <p>Manage your YML configurations with the following options:</p>
+
+    <ul>
+        <li><a href="/start?hostname=192.168.1.1&config=/opt/application/application.yml">Connect remotely and retrieve a YML file</a></li>
+        <li><a href="/start?md5hash=9d382e7936389f66e1c5de067fb2c0f4">Edit a locally stored YML file</a></li>
+        <li><a href="/download?md5hash=9d382e7936389f66e1c5de067fb2c0f4">Download a locally stored YML file</a></li>
+    </ul>
+
+    <form action="/start" method="get">
+        <label for="md5hash">Enter MD5 Hash:</label>
+        <input type="text" name="md5hash" id="md5hash">
+        <input type="submit" value="Retrieve YML">
+    </form>
+
+</body>
+</html>
+
