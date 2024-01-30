@@ -32,6 +32,8 @@ def setInDict(dataDict, mapList, value):
         getFromDict(dataDict, mapList[:-1])[mapList[-1]] = float(value)
     elif isinstance(getFromDict(dataDict, mapList[:-1])[mapList[-1]], str):
         getFromDict(dataDict, mapList[:-1])[mapList[-1]] = str(value)
+    elif isinstance(getFromDict(dataDict, mapList[:-1])[mapList[-1]], list):
+        getFromDict(dataDict, mapList[:-1])[mapList[-1]] = str(value)
     else:
         raise Exception("setInDict: {}={}".format(",".join(mapList),type(value)))
 
@@ -48,6 +50,8 @@ def newInDict(dataDict, mapList, value):
         dataDict[mapList[-1]] = float(value)
     elif isinstance(value, str):
         dataDict[mapList[-1]] = str(value)
+    elif isinstance(value,list):
+        dataDict[mapList[-1]] = list(value)
     else:
         raise Exception("newInDict: {}={}".format(",".join(mapList), type(value)))
 
@@ -58,7 +62,7 @@ def delInDict(dataDict, mapList):
 
 def walk(d):
     for k, v in d.items():
-        if isinstance(v,bool) or isinstance(v, str) or isinstance(v, int) or isinstance(v, float):
+        if isinstance(v,bool) or isinstance(v, str) or isinstance(v, int) or isinstance(v, float) or isinstance(v,list):
             g.path.append(str(k))
             key = ",".join(g.path)
             if isinstance(v,bool):
@@ -69,6 +73,8 @@ def walk(d):
                 g.keyvalue[str(key)] = int(v)
             elif isinstance(v, float):
                 g.keyvalue[str(key)] = float(v)
+            elif isinstance(v, list):
+                g.keyvalue[str(key)] = list(v)
             g.path.pop()
         elif v is None:
             continue
@@ -169,13 +175,13 @@ def start():
 
         stream = open(localfile, "r", encoding='utf-8')
 
-        session['yml'] = convert_keys_to_string(yaml.load(stream))
+        session['yml'] = convert_keys_to_string(yaml.load(stream, Loader=yaml.FullLoader))
 
     elif md5hash:
 
         stream = open("basket/" + md5hash, "r")
 
-        session['yml'] = convert_keys_to_string(yaml.load(stream))
+        session['yml'] = convert_keys_to_string(yaml.load(stream, Loader=yaml.FullLoader))
         
         session['md5hash'] = str(md5hash)
     else:
@@ -220,7 +226,7 @@ def start():
     return render_template('editor.html',
                            FIELDS=Markup(g.Fields),
                            TOTAL_LINES=g.Total_Lines,
-                           JSONYML=yaml.dump(convert_keys_to_string(yaml.load(yaml.dump(g.dictionary))), default_flow_style=False))
+                           JSONYML=yaml.dump(convert_keys_to_string(yaml.load(yaml.dump(g.dictionary),Loader=yaml.FullLoader)), default_flow_style=False))
 
 
 @app.route('/edit', methods=['GET', 'POST'])
@@ -303,7 +309,7 @@ def edit():
     return render_template('editor.html',
                            FIELDS=Markup(g.Fields),
                            TOTAL_LINES=g.Total_Lines,
-                           JSONYML=yaml.dump(convert_keys_to_string(yaml.load(yaml.dump(g.dictionary))), default_flow_style=False))
+                           JSONYML=yaml.dump(convert_keys_to_string(yaml.load(yaml.dump(g.dictionary),Loader=yaml.FullLoader)), default_flow_style=False))
 
 
 @app.route('/clear')
@@ -347,7 +353,7 @@ def update():
         #value = v.encode('utf-8').strip()
         if value != "sbrubles":
             setInDict(session['yml'], key, value)
-    yml = yaml.dump(convert_keys_to_string(yaml.load(yaml.dump(session['yml']))), default_flow_style=False)
+    yml = yaml.dump(convert_keys_to_string(yaml.load(yaml.dump(session['yml']),Loader=yaml.FullLoader)), default_flow_style=False)
 
     g.dictionary = copy.deepcopy(convert_keys_to_string(session['yml']))
 
