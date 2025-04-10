@@ -1,5 +1,5 @@
-# Yaml_Web_Editor
-A tool for editing YAML files, with a web interface
+# YAML Editor Web Application
+A tool for editing local YAML files, with a web interface
 
 ## Table of Contents
 - [Overview](#overview)
